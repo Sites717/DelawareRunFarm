@@ -1,0 +1,5 @@
+# Raw harvested photo archive - not needed for the live site, only
+# assets/photos/ (the curated, renamed selection actually used) ships.
+image library/
+.DS_Store
+Thumbs.db

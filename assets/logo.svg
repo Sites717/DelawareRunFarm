@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 92" role="img" aria-label="Delaware Run Farm">
+  <defs>
+    <style>
+      .dr-mark-ring { fill: none; stroke: #A33B2B; stroke-width: 4; }
+      .dr-mark-horse { fill: #A33B2B; }
+      .dr-wordmark { font-family: 'Fraunces', Georgia, serif; font-weight: 600; font-size: 30px; fill: #241F1A; }
+      .dr-wordmark-farm { font-family: 'Fraunces', Georgia, serif; font-weight: 600; font-size: 30px; fill: #A33B2B; }
+      .dr-subword { font-family: 'Work Sans', Arial, sans-serif; font-weight: 600; font-size: 10px; letter-spacing: 3px; fill: #6B6354; }
+    </style>
+  </defs>
+
+  <circle cx="42" cy="46" r="33" class="dr-mark-ring" />
+  <!-- simple running-horse silhouette, facing right -->
+  <path class="dr-mark-horse" d="
+    M18 58
+    C 20 50, 24 44, 31 41
+    C 29 36, 31 31, 36 29
+    C 40 27, 44 29, 45 33
+    L 47 33
+    C 52 31, 57 33, 59 38
+    L 62 46
+    C 64 50, 63 54, 59 55
+    L 55 56
+    L 56 63
+    L 51 63
+    L 49 57
+    L 42 58
+    L 42 64
+    L 37 64
+    L 36 57
+    C 29 57, 22 58, 18 58 Z
+  " />
+  <circle cx="43" cy="32" r="1.6" fill="#F3F0E3" />
+
+  <text x="88" y="42" class="dr-wordmark">Delaware Run</text>
+  <text x="88" y="70" class="dr-wordmark-farm">Farm</text>
+  <text x="168" y="70" class="dr-subword">WATSONTOWN, PA</text>
+</svg>

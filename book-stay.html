@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Book Your Stay — Delaware Run Farm</title>
+<meta name="description" content="Request your stay in the barn apartment at Delaware Run Farm. No payment until we confirm." />
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;0,700;1,500&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css" />
+<style>
+  .extra-card { position: relative; background: var(--card); border: 1.5px solid var(--line); border-radius: var(--radius-sm); padding: 16px; cursor: pointer; }
+  .extra-card input { position: absolute; top: 14px; right: 14px; width: 18px; height: 18px; }
+  .extra-card:has(input:checked) { border-color: var(--barn-red); background: #FCF4F1; }
+  .stepper { display: inline-flex; align-items: center; gap: 14px; }
+  .stepper button { width: 32px; height: 32px; border-radius: 50%; border: 1.5px solid var(--line); background: #fff; font-size: 1.1rem; cursor: pointer; }
+  .stepper input { width: 40px; text-align: center; border: none; font-weight: 700; font-size: 1.05rem; }
+  .book-layout { display: grid; grid-template-columns: 1.6fr 1fr; gap: 32px; align-items: flex-start; }
+  @media (max-width: 880px) { .book-layout { grid-template-columns: 1fr; } }
+  .summary-card { position: sticky; top: 100px; background: var(--pasture-dark); color: #fff; border-radius: var(--radius); padding: 28px; }
+  .summary-card .info-row { border-color: rgba(255,255,255,0.14); }
+  .summary-card .label { color: #CFC9B4; }
+  .summary-card .value { color: #fff; }
+</style>
+</head>
+<body>
+<a href="#main" class="skip-link">Skip to content</a>
+
+<div class="top-banner">
+  <div class="container">
+    <span>Farm stand open Fri–Sun, 9am–5pm · Fresh eggs daily</span>
+    <span>Watsontown, PA · (570) 555-0142</span>
+  </div>
+</div>
+
+<header class="site-header">
+  <div class="container header-row">
+    <a class="brand" href="index.html"><img src="assets/logo.svg" alt="Delaware Run Farm" /></a>
+    <nav>
+      <ul class="nav-links">
+        <li><a href="ponies.html">Ponies</a></li>
+        <li><a href="cavaliers.html">Cavalier Pups</a></li>
+        <li><a href="farm-stand.html">Farm Stand</a></li>
+        <li><a href="stays.html" class="active">Stays</a></li>
+        <li><a href="visit.html">Visit</a></li>
+      </ul>
+    </nav>
+    <div class="header-cta">
+      <a href="book-stay.html" class="btn btn-primary">Book a stay</a>
+      <button class="nav-toggle" aria-label="Open menu" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <section class="section-tight">
+    <div class="container">
+      <a href="stays.html" style="font-weight:700; color:var(--barn-red); text-decoration:none;">← About the stay</a>
+      <h1 style="margin-top:14px;">Book your stay</h1>
+      <p class="muted">Send a request and we'll confirm within 24 hours. No payment until we confirm.</p>
+
+      <form id="book-form" class="book-layout" style="margin-top:36px;" action="https://formspree.io/f/your-form-id" method="POST" data-formspree data-success="Request sent — we'll confirm within 24 hours.">
+        <div>
+
+          <div class="form-card" style="margin-bottom:24px;">
+            <h3>1 · When</h3>
+            <div class="form-row" style="margin-top:16px;">
+              <div class="field">
+                <label for="checkin">Check in</label>
+                <input id="checkin" name="checkin" type="date" data-checkin required />
+              </div>
+              <div class="field">
+                <label for="checkout">Check out</label>
+                <input id="checkout" name="checkout" type="date" data-checkout required />
+              </div>
+            </div>
+            <div class="field">
+              <label>Guests</label>
+              <div class="stepper" data-stepper>
+                <button type="button" data-step="dec" aria-label="Fewer guests">−</button>
+                <input type="number" name="guests" value="2" min="1" max="4" readonly data-guests />
+                <button type="button" data-step="inc" aria-label="More guests">+</button>
+              </div>
+              <p class="field-hint">Minimum stay 2 nights · Sleeps up to 4</p>
+            </div>
+          </div>
+
+          <div class="form-card" style="margin-bottom:24px;">
+            <h3>2 · Make it a farm stay</h3>
+            <div class="grid-2" style="margin-top:16px; gap:14px;">
+              <label class="extra-card">
+                <input type="checkbox" name="extra_chores" data-extra data-extra-price="25" data-extra-label="Morning chores" />
+                <strong>Morning chores</strong>
+                <p class="muted" style="font-size:0.85rem; margin:6px 0 0;">Feed and groom the ponies with us at dawn. +$25</p>
+              </label>
+              <label class="extra-card">
+                <input type="checkbox" name="extra_breakfast" data-extra data-extra-price="20" data-extra-label="Breakfast basket" />
+                <strong>Breakfast basket</strong>
+                <p class="muted" style="font-size:0.85rem; margin:6px 0 0;">Farm eggs and stand produce, waiting in your kitchen. +$20</p>
+              </label>
+              <label class="extra-card">
+                <input type="checkbox" name="extra_puppy" data-extra data-extra-price="15" data-extra-label="Puppy hour" />
+                <strong>Puppy hour</strong>
+                <p class="muted" style="font-size:0.85rem; margin:6px 0 0;">Time with the Cavaliers, when there's a litter. +$15</p>
+              </label>
+              <label class="extra-card">
+                <input type="checkbox" name="extra_tour" data-extra data-extra-price="30" data-extra-label="Barn & pedigree tour" />
+                <strong>Barn &amp; pedigree tour</strong>
+                <p class="muted" style="font-size:0.85rem; margin:6px 0 0;">Meet the racing ponies and hear their stories. +$30</p>
+              </label>
+            </div>
+          </div>
+
+          <div class="form-card">
+            <h3>3 · About you</h3>
+            <div class="form-row" style="margin-top:16px;">
+              <div class="field">
+                <label for="full-name">Full name</label>
+                <input id="full-name" name="name" type="text" required />
+              </div>
+              <div class="field">
+                <label for="b-email">Email</label>
+                <input id="b-email" name="email" type="email" required />
+              </div>
+            </div>
+            <div class="field">
+              <label for="b-phone">Phone</label>
+              <input id="b-phone" name="phone" type="tel" />
+            </div>
+            <div class="field">
+              <label for="kids">Kids under 12?</label>
+              <select id="kids" name="kids_under_12">
+                <option>No</option>
+                <option>Yes</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="notes">Anything we should know?</label>
+              <textarea id="notes" name="notes" placeholder="Celebrating something? Allergies? Want to meet a particular pony?"></textarea>
+            </div>
+          </div>
+
+        </div>
+
+        <aside class="summary-card" data-booking-summary data-nightly-rate="175">
+          <div class="photo-frame" style="margin-bottom:18px;"><img src="assets/photos/stays-bed.jpg" alt="Barn apartment bedroom" /></div>
+          <p class="eyebrow" style="color:var(--wheat);">Your stay</p>
+          <div class="info-row"><span class="label">Dates</span><span class="value" data-summary-dates>Pick your dates</span></div>
+          <div class="info-row"><span class="label">Guests</span><span class="value" data-summary-guests>2</span></div>
+          <div class="info-row"><span class="label">Nights</span><span class="value" data-summary-nights>0 nights</span></div>
+          <div class="info-row"><span class="label">Extras</span><span class="value" data-summary-extras>None yet</span></div>
+          <div class="info-row" style="border-bottom:none; padding-top:16px;"><span class="label" style="font-weight:700; color:#fff;">Estimated total</span><span class="value" style="font-size:1.3rem; color:var(--wheat);" data-summary-total>$0</span></div>
+          <button type="submit" class="btn btn-primary btn-block" style="margin-top:10px;">Request to book</button>
+          <p class="form-note" style="color:#CFC9B4;">You won't be charged yet. Full refund up to 7 days before check-in.</p>
+          <div class="form-status"></div>
+        </aside>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-bottom" style="border-top:none; padding-top:0;">
+      <span>© 2026 Delaware Run Farm</span>
+      <span>123 Creek Road, Watsontown, PA 17777 · (570) 555-0142</span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>
