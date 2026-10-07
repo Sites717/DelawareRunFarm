@@ -155,6 +155,7 @@ p { margin: 0 0 1em; }
 
 @media (max-width: 880px) {
   .nav-links {
+    display: none;
     position: absolute;
     top: 100%;
     left: 0;
@@ -165,12 +166,11 @@ p { margin: 0 0 1em; }
     padding: 24px 24px 32px;
     gap: 4px;
     max-height: calc(100vh - 100%);
-    transform: translateY(-110%);
-    transition: transform 0.25s ease;
     overflow-y: auto;
     border-bottom: 1px solid var(--line);
+    z-index: 60;
   }
-  .nav-links.open { transform: translateY(0); }
+  .nav-links.open { display: flex; }
   .nav-links a { display: block; width: 100%; padding: 12px 0; border-bottom: 1px solid var(--line); }
   .nav-toggle { display: block; }
   .header-cta { gap: 10px; }
