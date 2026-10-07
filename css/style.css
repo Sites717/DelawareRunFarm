@@ -126,7 +126,8 @@ p { margin: 0 0 1em; }
   padding: 12px 0;
 }
 .brand { display: flex; align-items: center; }
-.brand img { height: 44px; width: auto; }
+.brand img { height: 68px; width: auto; }
+@media (max-width: 560px) { .brand img { height: 52px; } }
 .nav-links {
   display: flex;
   align-items: center;
