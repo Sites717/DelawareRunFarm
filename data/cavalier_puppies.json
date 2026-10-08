@@ -1,1 +1,22 @@
-[]
+[
+  {
+    "id": "daisy",
+    "name": "Daisy",
+    "color": "Blenheim",
+    "sex": "Girl",
+    "status": "available",
+    "price": "3000",
+    "description": "Sweet and a little mischievous, Daisy's already figured out where the kitchen scraps come from. Vet-checked, first shots done, ready to meet her family.",
+    "photo_url": "assets/photos/uploaded/cavalier-puppy-daisy.jpg"
+  },
+  {
+    "id": "winston",
+    "name": "Winston",
+    "color": "Blenheim",
+    "sex": "Boy",
+    "status": "available",
+    "price": "3000",
+    "description": "Calm and cuddly, Winston loves a lap and a nap in equal measure. Vet-checked, first shots done, ready to meet his family.",
+    "photo_url": "assets/photos/uploaded/cavalier-puppy-winston.jpg"
+  }
+]
