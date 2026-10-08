@@ -21,6 +21,7 @@ export const PHOTOS_DIR = "assets/photos/uploaded";
 export const TABS = {
   ponies: { path: "data/ponies.json", kind: "array" },
   cavaliers_litter: { path: "data/cavaliers_litter.json", kind: "object" },
+  cavalier_puppies: { path: "data/cavalier_puppies.json", kind: "array" },
   farmstand_items: { path: "data/farmstand_items.json", kind: "array" },
   blocked_dates: { path: "data/blocked_dates.json", kind: "array" },
   site_status: { path: "data/site_status.json", kind: "object" },

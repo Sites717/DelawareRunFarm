@@ -47,7 +47,7 @@ async function enterApp() {
   $("#admin-app").style.display = "block";
   $("#signed-in-as").style.display = "inline";
   $("#signout-btn").style.display = "inline-block";
-  await Promise.all([loadPonies(), loadCavaliers(), loadFarmstand(), loadBlockedDates(), loadStatus()]);
+  await Promise.all([loadPonies(), loadCavaliers(), loadPuppies(), loadFarmstand(), loadBlockedDates(), loadStatus()]);
 }
 
 if (isSignedIn()) {
@@ -283,6 +283,103 @@ function renderCavaliersForm() {
     await loadCavaliers();
   }));
 }
+
+// ============================================================ CAVALIER PUPPIES
+
+let puppiesCache = { rows: [] };
+
+async function loadPuppies() {
+  puppiesCache = await readTab("cavalier_puppies");
+  renderPuppiesList();
+}
+
+function renderPuppiesList() {
+  const list = $("#puppies-list");
+  if (puppiesCache.rows.length === 0) {
+    list.innerHTML = `<p class="muted">No individual puppies added yet - add the first one below.</p>`;
+    return;
+  }
+  list.innerHTML = puppiesCache.rows.map((p, i) => `
+    <div class="admin-row-card">
+      <img src="${p.photo_url ? toDirectImageUrl(p.photo_url) : "assets/favicon.png"}" alt="" />
+      <div class="meta">
+        <strong>${escapeHtml(p.name) || "(unnamed)"}</strong>
+        <span>${escapeHtml(p.status)} ${p.price ? "- $" + escapeHtml(p.price) : ""} - ${escapeHtml(p.color)} ${p.sex ? "- " + escapeHtml(p.sex) : ""}</span>
+      </div>
+      <div class="admin-actions">
+        <button class="btn btn-outline btn-sm edit-puppy" data-i="${i}">Edit</button>
+        <button class="btn btn-outline btn-sm remove-puppy" data-i="${i}">Remove</button>
+      </div>
+    </div>
+  `).join("");
+  $$(".edit-puppy", list).forEach((btn) => btn.addEventListener("click", () => showPuppyForm(Number(btn.dataset.i))));
+  $$(".remove-puppy", list).forEach((btn) => btn.addEventListener("click", withBusy(btn, async () => {
+    const i = Number(btn.dataset.i);
+    if (!confirm(`Remove ${puppiesCache.rows[i].name || "this puppy"}? This can't be undone from the admin page (though it stays in the site's git history).`)) return;
+    await removeRow("cavalier_puppies", i);
+    toast("Puppy removed.");
+    await loadPuppies();
+  })));
+}
+
+function puppyFormHtml(p = {}) {
+  return `
+    <div class="inline-edit-form">
+      <div class="grid-2">
+        <label>Name<input name="name" value="${escapeHtml(p.name)}" required /></label>
+        <label>Sex<select name="sex">
+          <option value="">-</option>
+          <option value="Boy" ${p.sex === "Boy" ? "selected" : ""}>Boy</option>
+          <option value="Girl" ${p.sex === "Girl" ? "selected" : ""}>Girl</option>
+        </select></label>
+        <label>Color<select name="color">
+          <option value="">-</option>
+          <option value="Blenheim" ${p.color === "Blenheim" ? "selected" : ""}>Blenheim</option>
+          <option value="Tricolor" ${p.color === "Tricolor" ? "selected" : ""}>Tricolor</option>
+          <option value="Black & Tan" ${p.color === "Black & Tan" ? "selected" : ""}>Black &amp; Tan</option>
+          <option value="Ruby" ${p.color === "Ruby" ? "selected" : ""}>Ruby</option>
+        </select></label>
+        <label>Status<select name="status">
+          <option value="available" ${p.status === "available" ? "selected" : ""}>Available</option>
+          <option value="reserved" ${p.status === "reserved" ? "selected" : ""}>Reserved</option>
+          <option value="sold" ${p.status === "sold" ? "selected" : ""}>Sold</option>
+        </select></label>
+        <label>Price<input name="price" value="${escapeHtml(p.price)}" placeholder="e.g. 2800" /></label>
+      </div>
+      <label>Description<textarea name="description" rows="3">${escapeHtml(p.description)}</textarea></label>
+      ${photoFieldHtml("photo_url", p.photo_url)}
+      <div class="admin-actions" style="margin-top:14px;">
+        <button class="btn btn-primary save-puppy">Save</button>
+        <button class="btn btn-outline cancel-form">Cancel</button>
+      </div>
+    </div>
+  `;
+}
+
+function showPuppyForm(index = null) {
+  const container = $("#puppies-form-container");
+  const p = index !== null ? puppiesCache.rows[index] : { id: String(Date.now()), status: "available" };
+  container.innerHTML = puppyFormHtml(p);
+  const form = $(".inline-edit-form", container);
+  wirePhotoField(form);
+  const hiddenId = document.createElement("input");
+  hiddenId.type = "hidden"; hiddenId.name = "id"; hiddenId.value = p.id || String(Date.now());
+  form.appendChild(hiddenId);
+
+  const saveBtn = $(".save-puppy", form);
+  saveBtn.addEventListener("click", withBusy(saveBtn, async () => {
+    const data = readForm(form);
+    if (!data.name) { toast("Name is required.", true); throw new Error("Name is required."); }
+    if (index !== null) await updateRow("cavalier_puppies", index, data);
+    else await appendRow("cavalier_puppies", data);
+    toast("Puppy saved - it'll show on the live site within a minute or two.");
+    container.innerHTML = "";
+    await loadPuppies();
+  }));
+  $(".cancel-form", form).addEventListener("click", () => { container.innerHTML = ""; });
+}
+
+$("#puppies-add-btn").addEventListener("click", () => showPuppyForm(null));
 
 // ============================================================ FARM STAND
 

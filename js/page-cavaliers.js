@@ -1,7 +1,8 @@
 // Delaware Run Farm — cavaliers page. Reads the single-row
-// cavaliers_litter tab and rebuilds the "current litter" panel. Keeps
-// the page's own static placeholder if the sheet isn't reachable yet.
-import { fetchSingleRow } from "./data-reader.js";
+// cavaliers_litter tab and rebuilds the "current litter" panel, and
+// reads the cavalier_puppies list to render individual puppy cards.
+// Keeps the page's own static placeholder if the data isn't reachable yet.
+import { fetchSingleRow, fetchTab, toDirectImageUrl } from "./data-reader.js";
 
 function escapeHtml(s) {
   return String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
@@ -82,16 +83,60 @@ function panelHtml(c) {
   `;
 }
 
+function puppyPillFor(status) {
+  if (status === "available") return { cls: "pill-ok", label: "Available" };
+  if (status === "reserved") return { cls: "pill-bad", label: "Reserved" };
+  return { cls: "pill-warn", label: status ? status[0].toUpperCase() + status.slice(1) : "Status unknown" };
+}
+
+function puppyCardHtml(p) {
+  const status = (p.status || "").toLowerCase();
+  const pill = puppyPillFor(status);
+  const photo = p.photo_url ? toDirectImageUrl(p.photo_url) : "assets/photos/cavaliers-contact-sheet.jpg";
+  const footerRight = status === "reserved"
+    ? `<span class="muted" style="font-weight:700;">Reserved</span>`
+    : (p.price ? `<span class="price">$${escapeHtml(p.price)}</span>` : "<span></span>");
+  return `
+    <article class="animal-card" data-status="${escapeHtml(status)}">
+      <div class="animal-photo" style="background-image:url('${photo}');">
+        <span class="animal-status pill ${pill.cls}">${pill.label}</span>
+      </div>
+      <div class="animal-body">
+        <h3 class="animal-name">${escapeHtml(p.name) || "Unnamed"}</h3>
+        <p class="animal-pedigree">${escapeHtml(p.color)}${p.sex ? ` &middot; ${escapeHtml(p.sex)}` : ""}</p>
+        <p>${escapeHtml(p.description)}</p>
+        <div class="animal-footer">
+          ${footerRight}
+          <a href="visit.html#contact" class="btn btn-outline">Ask about ${escapeHtml(p.name) || "this puppy"}</a>
+        </div>
+      </div>
+    </article>
+  `;
+}
+
 document.addEventListener("DOMContentLoaded", async () => {
   const panel = document.querySelector("[data-cavaliers-panel]");
-  if (!panel) return;
-  let row;
-  try {
-    row = await fetchSingleRow("cavaliers_litter");
-  } catch (err) {
-    console.warn("Could not load live litter data, keeping placeholder content.", err);
-    return;
+  if (panel) {
+    try {
+      const row = await fetchSingleRow("cavaliers_litter");
+      if (row) panel.innerHTML = panelHtml(row);
+    } catch (err) {
+      console.warn("Could not load live litter data, keeping placeholder content.", err);
+    }
   }
-  if (!row) return;
-  panel.innerHTML = panelHtml(row);
+
+  const puppiesSection = document.querySelector("[data-puppies-section]");
+  const puppiesGrid = document.querySelector("[data-puppies-grid]");
+  if (puppiesSection && puppiesGrid) {
+    try {
+      const puppies = await fetchTab("cavalier_puppies");
+      const visible = puppies.filter((p) => (p.status || "").toLowerCase() !== "sold");
+      if (visible.length) {
+        puppiesGrid.innerHTML = visible.map(puppyCardHtml).join("");
+        puppiesSection.style.display = "";
+      }
+    } catch (err) {
+      console.warn("Could not load individual puppy data.", err);
+    }
+  }
 });
