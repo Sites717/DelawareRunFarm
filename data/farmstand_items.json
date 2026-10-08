@@ -1,0 +1,11 @@
+[
+  { "item_name": "Farm-fresh eggs, dozen", "season": "all", "in_stock": "yes" },
+  { "item_name": "Raw honey, 12oz jar", "season": "all", "in_stock": "yes" },
+  { "item_name": "Mixed greens, bag", "season": "spring", "in_stock": "yes" },
+  { "item_name": "Heirloom tomatoes, lb", "season": "summer", "in_stock": "yes" },
+  { "item_name": "Sweet corn, dozen", "season": "summer", "in_stock": "yes" },
+  { "item_name": "Pumpkins", "season": "fall", "in_stock": "yes" },
+  { "item_name": "Winter squash", "season": "fall", "in_stock": "yes" },
+  { "item_name": "Apples", "season": "fall", "in_stock": "yes" },
+  { "item_name": "Pickled preserves", "season": "winter", "in_stock": "yes" }
+]

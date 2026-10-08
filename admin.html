@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Delaware Run Farm — Admin</title>
+<meta name="robots" content="noindex, nofollow" />
+<link rel="icon" type="image/png" href="assets/favicon.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;0,700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css" />
+<style>
+  body { background: var(--paper-2); }
+  .admin-header { background: var(--pasture-dark); color: #fff; padding: 18px 0; }
+  .admin-header .container { display: flex; align-items: center; justify-content: space-between; }
+  .admin-header img { height: 48px; }
+  .admin-wrap { max-width: 920px; margin: 0 auto; padding: 32px 24px 80px; }
+  .admin-gate { text-align: center; padding: 80px 24px; }
+  .admin-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 28px; }
+  .admin-tab { padding: 10px 18px; border-radius: 999px; border: 1.5px solid var(--line); background: #fff; font-weight: 600; cursor: pointer; }
+  .admin-tab.active { background: var(--pasture); color: #fff; border-color: var(--pasture); }
+  .admin-panel { display: none; }
+  .admin-panel.active { display: block; }
+  .admin-row-card { background: #fff; border: 1px solid var(--line); border-radius: var(--radius-sm); padding: 16px; margin-bottom: 12px; display: flex; gap: 14px; align-items: center; }
+  .admin-row-card img { width: 64px; height: 64px; object-fit: cover; border-radius: 8px; background: var(--paper-2); flex-shrink: 0; }
+  .admin-row-card .meta { flex: 1; min-width: 0; }
+  .admin-row-card .meta strong { display: block; }
+  .admin-row-card .meta span { color: var(--muted); font-size: 0.85rem; }
+  .admin-actions { display: flex; gap: 8px; }
+  .admin-save-bar { position: sticky; bottom: 0; background: #fff; border-top: 1px solid var(--line); padding: 14px; margin: 24px -24px -24px; display: flex; gap: 10px; justify-content: flex-end; }
+  .admin-toast { position: fixed; top: 16px; right: 16px; background: var(--ok); color: #fff; padding: 12px 18px; border-radius: 8px; font-weight: 600; z-index: 100; display: none; }
+  .admin-toast.error { background: var(--bad); }
+  .admin-toast.show { display: block; }
+  .inline-edit-form { background: var(--paper-2); border-radius: var(--radius-sm); padding: 16px; margin: -4px 0 16px; }
+  .inline-edit-form .grid-2 { gap: 14px 20px; align-items: start; }
+  .inline-edit-form label { display: block; margin-bottom: 12px; font-weight: 600; font-size: 0.85rem; }
+  .inline-edit-form label input,
+  .inline-edit-form label select,
+  .inline-edit-form label textarea {
+    display: block; width: 100%; margin-top: 5px; padding: 9px 10px;
+    border: 1.5px solid var(--line); border-radius: 8px;
+    font-family: var(--sans); font-size: 0.95rem; font-weight: 400; color: var(--ink);
+  }
+  .inline-edit-form label input:focus,
+  .inline-edit-form label select:focus,
+  .inline-edit-form label textarea:focus { outline: 2px solid var(--barn-red); outline-offset: 1px; }
+  .inline-edit-form label textarea { resize: vertical; min-height: 80px; }
+  .btn-sm { padding: 7px 14px; font-size: 0.8rem; }
+  .token-form { max-width: 440px; margin: 24px auto 0; text-align: left; }
+  .token-form label { display: block; font-weight: 600; font-size: 0.85rem; margin-bottom: 6px; }
+  .token-form input { display: block; width: 100%; padding: 10px 12px; border: 1.5px solid var(--line); border-radius: 8px; font-family: var(--sans); font-size: 0.95rem; margin-bottom: 10px; }
+  .token-form .token-error { color: var(--bad); font-size: 0.85rem; margin-top: 4px; display: none; }
+  .token-form .token-error.show { display: block; }
+  .token-form p.muted { font-size: 0.82rem; }
+</style>
+</head>
+<body>
+
+<header class="admin-header">
+  <div class="container">
+    <div style="display:flex; align-items:center; gap:14px;">
+      <img src="assets/logo-mark.png" alt="" />
+      <strong style="font-family:var(--serif); font-size:1.2rem;">Farm Admin</strong>
+    </div>
+    <div>
+      <span id="signed-in-as" style="display:none; margin-right:14px;">Connected</span>
+      <button id="signout-btn" class="btn btn-outline-light" style="display:none;">Disconnect</button>
+    </div>
+  </div>
+</header>
+
+<div id="admin-gate" class="admin-gate">
+  <h1>Connect to manage the farm</h1>
+  <p class="muted">Ponies, the current litter, what's in stock, and which stay dates are blocked.</p>
+  <form class="token-form" id="token-form">
+    <label for="token-input">GitHub Personal Access Token</label>
+    <input id="token-input" type="password" autocomplete="off" placeholder="github_pat_..." required />
+    <button type="submit" class="btn btn-primary">Connect</button>
+    <p class="token-error" id="token-error"></p>
+    <p class="muted">First time here? See <strong>GITHUB_SETUP.md</strong> for how to create this token (about 5 minutes, one time only). It's saved only in this browser - you won't need to paste it again on this device.</p>
+  </form>
+</div>
+
+<div id="admin-app" class="admin-wrap" style="display:none;">
+
+  <div class="admin-tabs">
+    <button class="admin-tab active" data-tab="ponies">Ponies</button>
+    <button class="admin-tab" data-tab="cavaliers">Cavalier Litter</button>
+    <button class="admin-tab" data-tab="farmstand">Farm Stand</button>
+    <button class="admin-tab" data-tab="blocked">Blocked Stay Dates</button>
+    <button class="admin-tab" data-tab="status">This Week banner</button>
+  </div>
+
+  <!-- ===== Ponies ===== -->
+  <section class="admin-panel active" data-panel="ponies">
+    <h2>Ponies</h2>
+    <p class="muted">Edit a pony's details below, or add a new one. Setting status to "sold" hides it from the public site but keeps the record.</p>
+    <div id="ponies-list"></div>
+    <button id="ponies-add-btn" class="btn btn-outline">+ Add a new pony</button>
+    <div id="ponies-form-container"></div>
+  </section>
+
+  <!-- ===== Cavaliers ===== -->
+  <section class="admin-panel" data-panel="cavaliers">
+    <h2>Current Cavalier Litter</h2>
+    <p class="muted">One record - update it whenever the litter changes or a new one arrives.</p>
+    <div id="cavaliers-form-container"></div>
+  </section>
+
+  <!-- ===== Farm Stand ===== -->
+  <section class="admin-panel" data-panel="farmstand">
+    <h2>Farm Stand Items</h2>
+    <p class="muted">What's currently in stock, by season.</p>
+    <div id="farmstand-list"></div>
+    <button id="farmstand-add-btn" class="btn btn-outline">+ Add an item</button>
+    <div id="farmstand-form-container"></div>
+  </section>
+
+  <!-- ===== Blocked dates ===== -->
+  <section class="admin-panel" data-panel="blocked">
+    <h2>Blocked Stay Dates</h2>
+    <p class="muted">Add a date range here any time the barn apartment is booked somewhere else (Airbnb, a phone booking, etc.) so the website won't also accept a request for those nights.</p>
+    <div id="blocked-list"></div>
+    <button id="blocked-add-btn" class="btn btn-outline">+ Block a date range</button>
+    <div id="blocked-form-container"></div>
+  </section>
+
+  <!-- ===== Site status ===== -->
+  <section class="admin-panel" data-panel="status">
+    <h2>"This Week on the Farm" banner</h2>
+    <p class="muted">The 3 lines shown on the homepage.</p>
+    <div id="status-form-container"></div>
+  </section>
+
+</div>
+
+<div id="toast" class="admin-toast"></div>
+
+<script type="module" src="js/admin.js"></script>
+</body>
+</html>

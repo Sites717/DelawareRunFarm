@@ -10,7 +10,12 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;0,700;1,500&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.css" />
 <style>
+  .flatpickr-day.selected, .flatpickr-day.selected:hover { background: var(--barn-red); border-color: var(--barn-red); }
+  .flatpickr-day.today { border-color: var(--barn-red); }
+  .flatpickr-day.flatpickr-disabled, .flatpickr-day.flatpickr-disabled:hover { text-decoration: line-through; }
+  .date-availability-note { font-size: 0.82rem; color: var(--muted); margin-top: 6px; }
   .extra-card { position: relative; background: var(--card); border: 1.5px solid var(--line); border-radius: var(--radius-sm); padding: 16px; cursor: pointer; }
   .extra-card input { position: absolute; top: 14px; right: 14px; width: 18px; height: 18px; }
   .extra-card:has(input:checked) { border-color: var(--barn-red); background: #FCF4F1; }
@@ -71,13 +76,14 @@
             <div class="form-row" style="margin-top:16px;">
               <div class="field">
                 <label for="checkin">Check in</label>
-                <input id="checkin" name="checkin" type="date" data-checkin required />
+                <input id="checkin" name="checkin" type="text" placeholder="Select a date" data-checkin required autocomplete="off" />
               </div>
               <div class="field">
                 <label for="checkout">Check out</label>
-                <input id="checkout" name="checkout" type="date" data-checkout required />
+                <input id="checkout" name="checkout" type="text" placeholder="Select a date" data-checkout required autocomplete="off" />
               </div>
             </div>
+            <p class="date-availability-note" data-availability-note>Loading availability…</p>
             <div class="field">
               <label>Guests</label>
               <div class="stepper" data-stepper>
@@ -173,5 +179,7 @@
 </footer>
 
 <script src="js/main.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.js"></script>
+<script type="module" src="js/page-book-stay.js"></script>
 </body>
 </html>

@@ -1,0 +1,80 @@
+[
+  {
+    "id": "fame",
+    "name": "Fame",
+    "sire": "Dash For Cash",
+    "dam": "Miss Delaware Run",
+    "age": "6",
+    "height": "14.1h",
+    "sex": "Mare",
+    "status": "available",
+    "price": "32000",
+    "description": "Racebred broodmare, currently in foal. Calm around new people, easy to handle, proven producer.",
+    "photo_url": "assets/photos/ponies-broodmare-fame-kato.jpg"
+  },
+  {
+    "id": "kato",
+    "name": "Kato",
+    "sire": "Dash For Cash",
+    "dam": "Fame",
+    "age": "Weanling",
+    "height": "",
+    "sex": "Colt",
+    "status": "available",
+    "price": "22000",
+    "description": "Fame's current colt — bold and already fast across the paddock. Halter-trained, up to date on vaccinations.",
+    "photo_url": "assets/photos/ponies-weanlings-feed.jpg"
+  },
+  {
+    "id": "starla",
+    "name": "Starla",
+    "sire": "Starbright",
+    "dam": "Juniper Creek",
+    "age": "2",
+    "height": "12.2h",
+    "sex": "Filly",
+    "status": "reserved",
+    "price": "",
+    "description": "Pony of the Americas, started under saddle this spring. Reserved for a family in Lewisburg — check back for her next sibling.",
+    "photo_url": "assets/photos/ponies-poa-mare-foal.jpg"
+  },
+  {
+    "id": "unnamed-foal-feb2027",
+    "name": "Unnamed foal",
+    "sire": "Northern Creek",
+    "dam": "Juniper Creek",
+    "age": "Due Feb 2027",
+    "height": "",
+    "sex": "Unknown",
+    "status": "coming",
+    "price": "24000",
+    "description": "Juniper's next foal, due late winter. Join the Farm Letter to hear the moment they're born.",
+    "photo_url": "assets/photos/ponies-raising-foal.jpg"
+  },
+  {
+    "id": "remy",
+    "name": "Remy",
+    "sire": "Ferrande",
+    "dam": "Delaware Mist",
+    "age": "4",
+    "height": "15.3h",
+    "sex": "Gelding",
+    "status": "available",
+    "price": "38000",
+    "description": "Imported bloodline, quiet temperament, green-broke to saddle. A striking mover with a gentle disposition.",
+    "photo_url": "assets/photos/ponies-friesian.jpg"
+  },
+  {
+    "id": "unnamed-colt-mar2027",
+    "name": "Unnamed colt",
+    "sire": "Dash For Cash",
+    "dam": "Miss Delaware Run",
+    "age": "Due Mar 2027",
+    "height": "",
+    "sex": "Colt",
+    "status": "coming",
+    "price": "26000",
+    "description": "Full sibling to Kato, out of our foundation mare. Expect strong demand — the litter list applies to foals too.",
+    "photo_url": "assets/photos/ponies-weanling-barn.jpg"
+  }
+]

@@ -61,10 +61,10 @@
         <button class="filter-chip" data-filter="available">Available</button>
         <button class="filter-chip" data-filter="reserved">Reserved</button>
         <button class="filter-chip" data-filter="coming">Coming soon</button>
-        <span class="muted" style="margin-left:auto; align-self:center;">6 ponies</span>
+        <span class="muted" style="margin-left:auto; align-self:center;" data-ponies-count>6 ponies</span>
       </div>
 
-      <div class="grid-3">
+      <div class="grid-3" data-ponies-grid>
 
         <article class="animal-card" data-pony data-status="available">
           <div class="animal-photo" style="background-image:url('assets/photos/ponies-broodmare-fame-kato.jpg');">
@@ -274,5 +274,6 @@
 </footer>
 
 <script src="js/main.js"></script>
+<script type="module" src="js/page-ponies.js"></script>
 </body>
 </html>

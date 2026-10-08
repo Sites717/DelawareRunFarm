@@ -38,10 +38,13 @@ function initFaqAccordions() {
 function initFilterChips() {
   document.querySelectorAll('[data-filter-group]').forEach((group) => {
     const targetSelector = group.getAttribute('data-filter-group');
-    const cards = document.querySelectorAll(targetSelector);
     const chips = group.querySelectorAll('.filter-chip');
     chips.forEach((chip) => {
       chip.addEventListener('click', () => {
+        // Queried fresh on every click, not cached at page load, since
+        // cards for this group can be rendered later from the sheet
+        // (after DOMContentLoaded already ran once).
+        const cards = document.querySelectorAll(targetSelector);
         chips.forEach((c) => c.classList.remove('active'));
         chip.classList.add('active');
         const value = chip.getAttribute('data-filter');
